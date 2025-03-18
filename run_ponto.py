@@ -42,7 +42,7 @@ def baterPonto():
         #  Logando no sistema
         chrome.get("https://meurh.sinqia.com.br:8079/01/#/login")
 
-        user_name_input = chrome.find_element(By.CSS_SELECTOR, "po-input input[name='user']")
+        user_name_input = chrome.find_element(By.css, "input[name='user']")
         user_name_input.send_keys("50979862884")
 
         password_input = chrome.find_element(By.CSS_SELECTOR, "po-field-container input[name='password']")
