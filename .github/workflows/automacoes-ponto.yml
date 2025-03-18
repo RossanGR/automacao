@@ -33,6 +33,27 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install selenium holidays yagmail webdriver-manager
+      
+      - name: Verificar ambiente
+        run: |
+          echo "Sistema operacional:"
+          uname -a
+          echo "Versão do Chrome:"
+          google-chrome --version
+          echo "Variáveis de ambiente:"
+          env
+          
+      - name: Verificar arquivos
+        run: |
+          echo "Listando arquivos na pasta atual:"
+          ls -la
+          echo "Verificando se run_ponto.py existe:"
+          test -f run_ponto.py && echo "OK" || echo "ARQUIVO NÃO ENCONTRADO"
           
       - name: Executar automação de ponto
-        run: python run_ponto.py
+        run: |
+          echo "Iniciando automação de ponto..."
+          python -v run_ponto.py
+          echo "Código de saída: $?"
+
+      
