@@ -58,15 +58,15 @@ def baterPonto():
         # chrome.execute_script("localStorage.setItem('modalAlreadyDisplayed', 'true');")
 
         # # Entra na tela de bater o ponto
-        # chrome.get("https://meurh.sinqia.com.br:8079/01/#/timesheet/clockingsGeo/register")
+        chrome.get("https://meurh.sinqia.com.br:8079/01/#/timesheet/clockingsGeo/register")
 
-        # # Bate o ponto
-        # botao_ponto = WebDriverWait(chrome, 20).until(
-        #     EC.element_to_be_clickable((By.ID, "btn-app-swipe-clocking-register"))
-        # )
+        # Bate o ponto
+        botao_ponto = WebDriverWait(chrome, 20).until(
+            EC.element_to_be_clickable((By.ID, "btn-app-swipe-clocking-register"))
+        )
 
-        # actions = ActionChains(chrome)
-        # actions.double_click(botao_ponto).perform()
+        actions = ActionChains(chrome)
+        actions.double_click(botao_ponto).perform()
         print("Ponto batido com sucesso!")
         return True
     except Exception as e:
