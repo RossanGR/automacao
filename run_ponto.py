@@ -151,6 +151,7 @@ def job():
     else:
         print(f"Job executado em {datetime.datetime.now()}")
         success = baterPonto()
+        print(f"DEU SUCESSO? ", success)
         if success:
             sendEmail(datetime.datetime.now(), "Sucesso")
         else:
