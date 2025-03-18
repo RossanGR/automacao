@@ -60,9 +60,13 @@ jobs:
           python run_ponto.py
           echo "Código de saída: $?"
           
-      - name: Upload de screenshots (para debug)
+      - name: Mostrar screenshots (para debug)
         if: always()
-        uses: actions/upload-artifact@latest
-        with:
-          name: screenshots
-          path: /tmp/*.png
+        run: |
+          echo "Conteúdo da pasta /tmp"
+          ls -la /tmp/*.png || echo "Nenhum screenshot encontrado"
+          echo "Resumo dos screenshots:"
+          for f in /tmp/*.png; do
+            echo "Screenshot: $f"
+            file "$f" || echo "Arquivo não encontrado"
+          done
