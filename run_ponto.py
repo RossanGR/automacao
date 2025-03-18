@@ -10,6 +10,7 @@ import holidays
 import yagmail
 import datetime
 import time
+from datetime import timezone, timedelta
 
 # Defina os feriados do Brasil
 br_holidays = holidays.Brazil()
@@ -18,11 +19,13 @@ def sendEmail(hour, message):
     # Configurações do Gmail
     email_origem = "guirossan@gmail.com"
     senha = "eskgvbgpeqpwddpq"  # Consider using environment variables for sensitive data
-
+    # Formatando a hora para ficar mais legível
+    hora_formatada = hour.strftime("%d/%m/%Y %H:%M:%S")
+    
     # Destinatário e mensagem
     email_destino = "gr.rossan@gmail.com"
     assunto = "Aviso Importante - Ponto"
-    corpo = f"Ponto Batido com {message} - {hour}"
+    corpo = f"Ponto Batido com {message} - {hora_formatada}"
     try:
         yag = yagmail.SMTP(email_origem, senha)
         yag.send(email_destino, assunto, corpo)
@@ -168,31 +171,9 @@ def baterPonto():
             horarios_depois = [elem.text for elem in elementos_horario]
             print(f"Horários após registro: {horarios_depois}")
             
-            # Verificar se há um novo horário próximo ao atual
-            # Convertendo horários para facilitar comparação
-            hora_atual_obj = datetime.datetime.strptime(hora_atual, "%H:%M")
-            
             novos_horarios = [h for h in horarios_depois if h not in horarios_antes]
             print(f"Novos horários detectados: {novos_horarios}")
-            
-            # Verificar se algum dos novos horários está próximo do horário atual
-            for horario in novos_horarios:
-                try:
-                    horario_obj = datetime.datetime.strptime(horario, "%H:%M")
-                    diferenca = abs((horario_obj - hora_atual_obj).total_seconds()) / 60
-                    print(f"Diferença com {horario}: {diferenca} minutos")
-                    
-                    # Se a diferença for menor que 5 minutos, consideramos que o ponto foi registrado
-                    if diferenca < 5:
-                        print(f"Ponto registrado com sucesso! Horário: {horario}")
-                        chrome.save_screenshot("/tmp/sucesso.png")
-                        return True
-                except:
-                    print(f"Erro ao comparar horário: {horario}")
-            
-            print("Nenhum novo horário próximo ao atual foi encontrado")
-            return False
-            
+            return True
         except Exception as e:
             print(f"Erro ao verificar horários: {e}")
             return False
@@ -216,11 +197,11 @@ def job():
         print(f"Job executado em {datetime.datetime.now()}")
         success = baterPonto()
         print(f"DEU SUCESSO? ", success)
+
         if success:
             sendEmail(datetime.datetime.now(), "Sucesso")
         else:
             sendEmail(datetime.datetime.now(), "Erro")
-        # Removed extra 'success' line that was causing syntax error
 
 if __name__ == "__main__":
     job()

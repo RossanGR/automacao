@@ -6,8 +6,6 @@ on:
     - cron: '0 16 * * 1-5'  # 13h horário de Brasília 
     - cron: '0 17 * * 1-5'  # 14h horário de Brasília
     - cron: '0 21 * * 1-5'  # 18h horário de Brasília
-    - cron: '0 1 * * 2-6'   # 22h horário de Brasília
-    - cron: '20 1 * * 2-6'
   workflow_dispatch:
   push:
     branches: [ master ]
