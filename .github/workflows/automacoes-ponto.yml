@@ -62,7 +62,7 @@ jobs:
           
       - name: Upload de screenshots (para debug)
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@latest
         with:
           name: screenshots
           path: /tmp/*.png
