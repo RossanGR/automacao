@@ -33,6 +33,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install selenium holidays yagmail webdriver-manager
+          pip install --verbose selenium  # Verbose install for debugging
       
       - name: Verificar ambiente
         run: |
@@ -40,20 +41,20 @@ jobs:
           uname -a
           echo "Versão do Chrome:"
           google-chrome --version
-          echo "Variáveis de ambiente:"
-          env
+          echo "Versão do Python:"
+          python --version
+          echo "Listando pacotes instalados:"
+          pip list
           
       - name: Verificar arquivos
         run: |
           echo "Listando arquivos na pasta atual:"
           ls -la
-          echo "Verificando se run_ponto.py existe:"
-          test -f run_ponto.py && echo "OK" || echo "ARQUIVO NÃO ENCONTRADO"
+          echo "Verificando conteúdo de run_ponto.py:"
+          cat run_ponto.py
           
       - name: Executar automação de ponto
         run: |
           echo "Iniciando automação de ponto..."
-          python -v run_ponto.py
+          python run_ponto.py
           echo "Código de saída: $?"
-
-      
