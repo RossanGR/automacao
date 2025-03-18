@@ -45,16 +45,16 @@ def baterPonto():
         user_name_input = chrome.find_element(By.CSS_SELECTOR, "input[name='user']")
         user_name_input.send_keys("50979862884")
 
-        password_input = chrome.find_element(By.CSS_SELECTOR, "po-field-container input[name='password']")
+        password_input = chrome.find_element(By.CSS_SELECTOR, "input[name='password']")
         password_input.send_keys("013084")
 
         chrome.find_element(By.CSS_SELECTOR, "po-button button").click()
 
         # Batendo o ponto
-        WebDriverWait(chrome, 30).until(lambda driver: driver.execute_script("return document.readyState") == "complete")
+        WebDriverWait(chrome, 100).until(lambda driver: driver.execute_script("return document.readyState") == "complete")
 
         # Espera aparecer o sub titulo EVENTO para navegar para pagina de bater ponto
-        WebDriverWait(chrome, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "po-font-subtitle")))
+        WebDriverWait(chrome, 100).until(EC.presence_of_element_located((By.CLASS_NAME, "po-font-subtitle")))
         chrome.execute_script("localStorage.setItem('modalAlreadyDisplayed', 'true');")
 
         # Entra na tela de bater o ponto
