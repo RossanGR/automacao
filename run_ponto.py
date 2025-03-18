@@ -50,23 +50,23 @@ def baterPonto():
 
         chrome.find_element(By.CSS_SELECTOR, "po-button button").click()
 
-        # Batendo o ponto
-        WebDriverWait(chrome, 30).until(lambda driver: driver.execute_script("return document.readyState") == "complete")
+        # # Batendo o ponto
+        # WebDriverWait(chrome, 30).until(lambda driver: driver.execute_script("return document.readyState") == "complete")
 
-        # Espera aparecer o sub titulo EVENTO para navegar para pagina de bater ponto
-        WebDriverWait(chrome, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "po-font-subtitle")))
-        chrome.execute_script("localStorage.setItem('modalAlreadyDisplayed', 'true');")
+        # # Espera aparecer o sub titulo EVENTO para navegar para pagina de bater ponto
+        # WebDriverWait(chrome, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "po-font-subtitle")))
+        # chrome.execute_script("localStorage.setItem('modalAlreadyDisplayed', 'true');")
 
-        # Entra na tela de bater o ponto
-        chrome.get("https://meurh.sinqia.com.br:8079/01/#/timesheet/clockingsGeo/register")
+        # # Entra na tela de bater o ponto
+        # chrome.get("https://meurh.sinqia.com.br:8079/01/#/timesheet/clockingsGeo/register")
 
-        # Bate o ponto
-        botao_ponto = WebDriverWait(chrome, 20).until(
-            EC.element_to_be_clickable((By.ID, "btn-app-swipe-clocking-register"))
-        )
+        # # Bate o ponto
+        # botao_ponto = WebDriverWait(chrome, 20).until(
+        #     EC.element_to_be_clickable((By.ID, "btn-app-swipe-clocking-register"))
+        # )
 
-        actions = ActionChains(chrome)
-        actions.double_click(botao_ponto).perform()
+        # actions = ActionChains(chrome)
+        # actions.double_click(botao_ponto).perform()
         print("Ponto batido com sucesso!")
         return True
     except Exception as e:
