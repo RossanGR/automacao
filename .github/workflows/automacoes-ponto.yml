@@ -2,7 +2,7 @@ name: Automação de Ponto
 
 on:
   schedule:
-    - cron: '0 12 * * 1-5'  # 9h horário de Brasília (UTC-3), apenas dias úteis (segunda a sexta)
+    - cron: '30 11 * * 1-5'  # 8h 30m horário de Brasília (UTC-3), apenas dias úteis (segunda a sexta)
     - cron: '0 16 * * 1-5'  # 13h horário de Brasília 
     - cron: '0 17 * * 1-5'  # 14h horário de Brasília
     - cron: '0 21 * * 1-5'  # 18h horário de Brasília
