@@ -51,11 +51,11 @@ def baterPonto():
         chrome.find_element(By.CSS_SELECTOR, "po-button button").click()
 
         # # Batendo o ponto
-        # WebDriverWait(chrome, 30).until(lambda driver: driver.execute_script("return document.readyState") == "complete")
+         WebDriverWait(chrome, 30).until(lambda driver: driver.execute_script("return document.readyState") == "complete")
 
         # # Espera aparecer o sub titulo EVENTO para navegar para pagina de bater ponto
-        # WebDriverWait(chrome, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "po-font-subtitle")))
-        # chrome.execute_script("localStorage.setItem('modalAlreadyDisplayed', 'true');")
+        WebDriverWait(chrome, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "po-font-subtitle")))
+         chrome.execute_script("localStorage.setItem('modalAlreadyDisplayed', 'true');")
 
         # # Entra na tela de bater o ponto
         chrome.get("https://meurh.sinqia.com.br:8079/01/#/timesheet/clockingsGeo/register")
