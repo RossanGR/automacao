@@ -9,6 +9,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 import holidays
 import yagmail
 import datetime
+import time
 
 # Defina os feriados do Brasil
 br_holidays = holidays.Brazil()
@@ -91,6 +92,21 @@ def baterPonto():
             lambda driver: driver.execute_script("return document.readyState") == "complete"
         )
         
+        # Obter horário atual para verificar depois
+        agora = datetime.datetime.now()
+        hora_atual = agora.strftime("%H:%M")
+        print(f"Horário atual: {hora_atual}")
+        
+        # Verificar os horários já registrados antes de bater o ponto
+        horarios_antes = []
+        try:
+            elementos_horario = chrome.find_elements(By.CSS_SELECTOR, ".clocking .title")
+            for elem in elementos_horario:
+                horarios_antes.append(elem.text)
+            print(f"Horários já registrados: {horarios_antes}")
+        except:
+            print("Não foi possível obter horários já registrados")
+        
         # Tirar screenshot da página de ponto
         chrome.save_screenshot("/tmp/pagina_ponto.png")
         
@@ -100,7 +116,7 @@ def baterPonto():
             botao_ponto = WebDriverWait(chrome, 30).until(
                 EC.element_to_be_clickable((By.ID, "btn-app-swipe-clocking-register"))
             )
-            print("Botão de ponto encontrado por ID", botao_ponto)
+            print("Botão de ponto encontrado por ID")
         except:
             try:
                 # Segunda tentativa: seletor CSS mais genérico
@@ -118,8 +134,11 @@ def baterPonto():
         # Tentar diferentes interações com o botão
         try:
             # Primeiro: click simples
+            print("Tentando clicar no botão")
             botao_ponto.click()
-            print("Tentando clicar no botão",botao_ponto)
+            # Adicionar double click
+            actions = ActionChains(chrome)
+            actions.double_click(botao_ponto).perform()
         except:
             try:
                 # Segundo: JavaScript click
@@ -132,6 +151,51 @@ def baterPonto():
         
         # Tirar screenshot após clicar
         chrome.save_screenshot("/tmp/apos_clicar.png")
+        
+        # Aguardar para verificar se o ponto foi registrado
+        print("Aguardando atualização da página...")
+        time.sleep(5)  # Dar tempo para a página atualizar
+        
+        # Verificar se há um novo horário correspondente ao atual
+        try:
+            # Esperar que a página atualize com o novo registro
+            WebDriverWait(chrome, 30).until(
+                lambda driver: len(driver.find_elements(By.CSS_SELECTOR, ".clocking .title")) > len(horarios_antes)
+            )
+            
+            # Obter todos os horários após o registro
+            elementos_horario = chrome.find_elements(By.CSS_SELECTOR, ".clocking .title")
+            horarios_depois = [elem.text for elem in elementos_horario]
+            print(f"Horários após registro: {horarios_depois}")
+            
+            # Verificar se há um novo horário próximo ao atual
+            # Convertendo horários para facilitar comparação
+            hora_atual_obj = datetime.datetime.strptime(hora_atual, "%H:%M")
+            
+            novos_horarios = [h for h in horarios_depois if h not in horarios_antes]
+            print(f"Novos horários detectados: {novos_horarios}")
+            
+            # Verificar se algum dos novos horários está próximo do horário atual
+            for horario in novos_horarios:
+                try:
+                    horario_obj = datetime.datetime.strptime(horario, "%H:%M")
+                    diferenca = abs((horario_obj - hora_atual_obj).total_seconds()) / 60
+                    print(f"Diferença com {horario}: {diferenca} minutos")
+                    
+                    # Se a diferença for menor que 5 minutos, consideramos que o ponto foi registrado
+                    if diferenca < 5:
+                        print(f"Ponto registrado com sucesso! Horário: {horario}")
+                        chrome.save_screenshot("/tmp/sucesso.png")
+                        return True
+                except:
+                    print(f"Erro ao comparar horário: {horario}")
+            
+            print("Nenhum novo horário próximo ao atual foi encontrado")
+            return False
+            
+        except Exception as e:
+            print(f"Erro ao verificar horários: {e}")
+            return False
             
     except Exception as e:
         print(f"Erro ao bater ponto: {e}")
