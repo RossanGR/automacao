@@ -6,10 +6,11 @@ on:
     - cron: '0 16 * * 1-5'  # 13h horário de Brasília 
     - cron: '0 17 * * 1-5'  # 14h horário de Brasília
     - cron: '0 21 * * 1-5'  # 18h horário de Brasília
-    - cron: '0 1 * * 2-6'  # 22h horário de Brasília
- workflow_dispatch: 
+    - cron: '0 1 * * 2-6'   # 22h horário de Brasília
+  workflow_dispatch:
   push:
-    branches: [ master ] 
+    branches: [ master ]
+
 jobs:
   bater-ponto:
     runs-on: ubuntu-latest
