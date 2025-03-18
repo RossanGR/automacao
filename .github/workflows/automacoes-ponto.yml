@@ -59,3 +59,10 @@ jobs:
           echo "Iniciando automação de ponto..."
           python run_ponto.py
           echo "Código de saída: $?"
+          
+      - name: Upload de screenshots (para debug)
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: /tmp/*.png
