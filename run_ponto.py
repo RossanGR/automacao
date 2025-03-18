@@ -25,7 +25,6 @@ def sendEmail(hour, message):
     try:
         yag = yagmail.SMTP(email_origem, senha)
         yag.send(email_destino, assunto, corpo)
-        print("E-mail enviado com sucesso!")
     except Exception as e:
         print(f"Erro ao enviar o e-mail: {e}")
 
@@ -101,7 +100,7 @@ def baterPonto():
             botao_ponto = WebDriverWait(chrome, 30).until(
                 EC.element_to_be_clickable((By.ID, "btn-app-swipe-clocking-register"))
             )
-            print("Botão de ponto encontrado por ID")
+            print("Botão de ponto encontrado por ID", botao_ponto)
         except:
             try:
                 # Segunda tentativa: seletor CSS mais genérico
@@ -119,8 +118,8 @@ def baterPonto():
         # Tentar diferentes interações com o botão
         try:
             # Primeiro: click simples
-            print("Tentando clicar no botão")
             botao_ponto.click()
+            print("Tentando clicar no botão",botao_ponto)
         except:
             try:
                 # Segundo: JavaScript click
